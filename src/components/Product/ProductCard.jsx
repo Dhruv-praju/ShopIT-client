@@ -2,7 +2,7 @@ import React from 'react'
 import { Card, CardMedia, CardActions, CardContent, Typography, Button,Box, Rating } from '@mui/material'
 import sampleImg from '../../images/ssd.jpg'
 
-const Product = ({img, name, price, ratings=4, n_reviews=33}) => {
+const ProductCard = ({img=sampleImg, name='SAMSUNG SSD', price=114, ratings=4, n_reviews=33}) => {
     return(
         <Card elevation={4} sx={{ maxWidth: 250 }}>
             <Box px={2} pt={2} display='flex' justifyContent='center'>
@@ -37,4 +37,4 @@ const Product = ({img, name, price, ratings=4, n_reviews=33}) => {
     )
 }
 
-export default Product
+export default ProductCard
