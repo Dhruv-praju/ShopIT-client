@@ -1,7 +1,5 @@
-import React, { useEffect } from "react"
-import { Routes, Route, Link } from "react-router-dom";
-
-import { getProducts } from "./features/product/productApiSlice";
+import React from "react"
+import { Routes, Route } from "react-router-dom";
 
 import PageLayout from "./components/PageLayout";
 import Home from "./components/Pages/Home";

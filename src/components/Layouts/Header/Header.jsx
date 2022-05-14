@@ -52,7 +52,7 @@ const Header = () => {
       <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" sx={{background:'#0a1c47'}}>
         <Toolbar>
-          <Link to='/'><img src={logo} /></Link>
+          <Link to='/'><img alt='logo' src={logo} /></Link>
           <Typography variant="h6" component="div" px={2}>
             News
           </Typography>

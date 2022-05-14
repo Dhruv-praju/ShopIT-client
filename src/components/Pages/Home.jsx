@@ -17,7 +17,7 @@ const Home = () => {
         <Grid container rowSpacing={4} spacing={1} pt={3}>
           {data?.products.map(p => 
             <Grid item key={p._id} display='flex' justifyContent='center' xs={12} sm={6} md={4} lg={3}>
-                <ProductCard name={p.name} img={p.image} price={p.price}/>
+                <ProductCard id={p._id} name={p.name} img={p.image} price={p.price}/>
             </Grid>
             )}
         </Grid>
