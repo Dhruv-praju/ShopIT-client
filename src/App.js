@@ -2,6 +2,7 @@ import React from "react"
 import { Routes, Route } from "react-router-dom";
 
 import PageLayout from "./components/PageLayout";
+import Auth from "./components/Pages/Auth";
 import Home from "./components/Pages/Home";
 import Product from "./components/Pages/Product";
 
@@ -13,6 +14,7 @@ const App = ()=>{
                 <Route element={<PageLayout />}>
                     <Route index element={<Home />} />
                     <Route path="/:id" element={<Product />} />
+                    <Route path="/auth" element={<Auth />}/>
                 </Route>
             </Routes>
         </div>

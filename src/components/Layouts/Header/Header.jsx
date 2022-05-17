@@ -1,5 +1,5 @@
-import React from 'react'
-import { AppBar, Toolbar, Button, Typography,Box, InputBase } from '@mui/material'
+import React, {useState} from 'react'
+import { AppBar, Toolbar,IconButton, Button, Typography,Box, InputBase, MenuItem, Menu, Avatar } from '@mui/material'
 // import {MenuIcon} from '@mui/icons-material'
 import logo from '../../../images/logo.png'
 import { styled, alpha } from '@mui/material/styles';
@@ -47,6 +47,18 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const Header = () => {
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const user = null
   return (
     <div>
       <Box sx={{ flexGrow: 1 }}>
@@ -69,9 +81,46 @@ const Header = () => {
             </Search>
           </Box>
 
-          <Button color="inherit">Login</Button>
 
           <Button color="inherit">Cart (3)</Button>
+          { user ? (
+            <Box sx={{ flexGrow: 0 }} px={1} ml={2}>
+                <IconButton onClick={handleMenu} sx={{ p: 0 }}>
+                  <Avatar alt={user} />
+                </IconButton>
+              <Menu
+                sx={{ mt: '45px' }}
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                
+                  <MenuItem onClick={handleClose}>
+                    <Typography textAlign="center">Orders</Typography>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Typography textAlign="center">Profile</Typography>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Typography textAlign="center">Logout</Typography>
+                  </MenuItem>
+              </Menu>
+            </Box>
+          ): (
+            <>
+              <Button component={Link} to='/auth' color="inherit">Login</Button>
+            </>
+          )}
         </Toolbar>
       </AppBar>
     </Box>

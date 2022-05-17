@@ -19,11 +19,14 @@ const ProductCard = ({id, img=sampleImg, name='SAMSUNG SSD', price=114, ratings=
             </Link>
             <Box sx={{ flexDirection: 'column', alignItems:'flex-end' }} >
             <CardContent sx={{pb:1}}>
-                <Link to={`/${id}`} style={{textDecoration:'none', color:'black'}}>
-                    <Typography gutterBottom variant="subtitle1" component="div">
+                <Typography 
+                    gutterBottom 
+                    variant="subtitle1" 
+                    component={Link} 
+                    to={`/${id}`}
+                    sx={{textDecoration:'none', color:'black'}}>
                         {name}
-                    </Typography>
-                </Link>
+                </Typography>
                 <Box display='flex' alignItems='center'>
                     <Rating name="read-only" value={ratings} precision={0.5} readOnly />
                     <Typography variant='subtitle2' component='p' pl={1} sx={{paddingTop:0.3, color:'#737373'}}>
@@ -35,14 +38,14 @@ const ProductCard = ({id, img=sampleImg, name='SAMSUNG SSD', price=114, ratings=
                 </Typography>
             </CardContent>
             <CardActions sx={{justifyContent:'center'}}>
-                <Link to={`/${id}`} style={{textDecoration:'none', color:'white', width:'100%'}}>
                     <Button 
-                    size="large"
-                    variant='contained'
-                    sx={{width:'100%',background:'#ff9800', '&:hover':{background:'#b26a00'}}}>
+                        size="large"
+                        component={Link}
+                        to={`/${id}`}
+                        variant='contained'
+                        sx={{width:'100%',background:'#ff9800', '&:hover':{background:'#b26a00'}}}>
                             View Details
                     </Button>
-                </Link>
             </CardActions>
             </Box>
         </Card>
