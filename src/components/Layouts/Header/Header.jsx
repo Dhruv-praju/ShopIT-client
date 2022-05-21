@@ -4,7 +4,9 @@ import { AppBar, Toolbar,IconButton, Button, Typography,Box, InputBase, MenuItem
 import logo from '../../../images/logo.png'
 import { styled, alpha } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { logOutUser } from '../../../features/user/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -47,7 +49,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const Header = () => {
+  const user = useSelector(state => state.user)
+  // console.log(user);
 
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleMenu = (event) => {
@@ -58,7 +65,6 @@ const Header = () => {
     setAnchorEl(null);
   };
 
-  const user = null
   return (
     <div>
       <Box sx={{ flexGrow: 1 }}>
@@ -83,10 +89,10 @@ const Header = () => {
 
 
           <Button color="inherit">Cart (3)</Button>
-          { user ? (
+          { user.isSignedIn ? (
             <Box sx={{ flexGrow: 0 }} px={1} ml={2}>
                 <IconButton onClick={handleMenu} sx={{ p: 0 }}>
-                  <Avatar alt={user} />
+                  <Avatar alt={user.name} src={user.picture} />
                 </IconButton>
               <Menu
                 sx={{ mt: '45px' }}
@@ -111,7 +117,11 @@ const Header = () => {
                   <MenuItem onClick={handleClose}>
                     <Typography textAlign="center">Profile</Typography>
                   </MenuItem>
-                  <MenuItem onClick={handleClose}>
+                  <MenuItem onClick={()=>{
+                    handleClose()
+                    dispatch(logOutUser())
+                    navigate('/')
+                    }}>
                     <Typography textAlign="center">Logout</Typography>
                   </MenuItem>
               </Menu>

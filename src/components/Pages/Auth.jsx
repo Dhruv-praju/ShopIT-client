@@ -5,20 +5,56 @@ import { Avatar, Button, Paper, Grid, Typography, Container,Box, InputAdornment,
 import { Checkbox, TextField, FormControlLabel } from '@mui/material'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {Visibility, VisibilityOff} from '@mui/icons-material';
-import { GoogleLogin } from 'react-google-login';
-import icon from '../google_icon'
+import { useGoogleLogin } from '@react-oauth/google';
 
+import axios from 'axios'
+import { logInUser } from '../../features/user/userSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+
+import Icon from '../google_icon'
+
+const fetchGoogleUser = async token => {
+    const resp = await axios.get(
+        'https://www.googleapis.com/oauth2/v3/userinfo', {
+        params:{
+            access_token: token
+        }
+    })
+
+    return resp.data
+}
 const Auth = () => {
+    // const currUser = useSelector(state => state.user)
+    // console.log('current user is',currUser);
 
     const [isSignUp, toggleSignUp] = useToggle(false)
     const [showPassword, toggleShowPassword] = useToggle(false)
 
-    const googleSuccess = () => {
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
+    const login = useGoogleLogin({
+        onSuccess: async tokenResponse => {
+            // console.log(tokenResponse);
+            const {access_token} = tokenResponse
+            const user = await fetchGoogleUser(access_token)
+            // console.log(user);
+            if(user.email_verified) dispatch(logInUser(user))
+            else console.log(user.error);
+
+            navigate('/')
+        },
+        onError:() => {console.log('Failed');},
+        // flow: 'auth-code',
+    })
+    const googleSuccess = (res) => {
+        console.log(res);
+        console.log('HEYYYY');
     }
 
-    const googleFailure = () => {
-        console.log('GOOGLE SIGN IN WAS UNSUCCESSFUL !!');
+    const googleFailure = (error) => {
+        console.log('GOOGLE SIGN IN WAS UNSUCCESSFUL !!', error);
     }
 
     return (
@@ -116,16 +152,7 @@ const Auth = () => {
                             >
                             {isSignUp ? 'Sign Up' :'Log In'}
                             </Button>
-                            <GoogleLogin 
-                                clientId='GOOGLE ID'
-                                render={renderProps => (
-                                    <Button variant='contained' fullWidth onClick={renderProps.onClick}>
-                                        Google Sign In
-                                    </Button>
-                                )}
-                                onSuccess={googleSuccess}
-                                onFailure={googleFailure}
-                            />
+                            <Button startIcon={<Icon />} fullWidth variant='contained' sx={{bgcolor:'#0a1c47'}} onClick={login}>Google Sign In</Button>
                             <Grid container>
                                 {isSignUp 
                                 ? 
