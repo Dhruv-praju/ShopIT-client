@@ -1,17 +1,23 @@
 import React, { useState } from 'react'
 import { Grid, CircularProgress, Box, Pagination } from '@mui/material'
-import { useGetAllProductsQuery, useGetProductsByPageQuery } from '../../features/product/productApiSlice'
 import ProductCard from '../Product/ProductCard'
 
-const Home = () => {
-  const [page, setPage] = useState(1)
-  const {data, isLoading, error} = useGetProductsByPageQuery(page)
+import { useGetProductsBySearchQuery } from '../../features/product/productApiSlice'
+import { useSearchParams } from 'react-router-dom'
 
-  const handlePageChange = (evt, value) => {
-    // console.log(page, value)
-    setPage(value)
-  }
-  // console.log(data);
+const Search = () => {
+    const [searchParams] = useSearchParams()
+    const searchVal = searchParams.get('q')
+    // console.log(searchVal);
+
+    const [page, setPage] = useState(1)
+    const {data, isLoading, error} = useGetProductsBySearchQuery(searchVal, page)
+
+    const handlePageChange = (evt, value) => {
+        // console.log('Page changed', value)
+        setPage(value)
+      }
+
   return (
     <>  
       {error ? <h1>Oh no, There was an error</h1> :
@@ -21,7 +27,7 @@ const Home = () => {
           <CircularProgress size={50} thickness={4} />
         </Box> : 
 
-       data ? 
+       data?.success && data?.products.length ? 
        <>
         <Grid container rowSpacing={4} spacing={1} pt={3}>
           {data?.products.map(p => 
@@ -40,4 +46,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default Search

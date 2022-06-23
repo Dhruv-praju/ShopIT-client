@@ -1,6 +1,7 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from "react-router-dom";
+import {CookiesProvider} from 'react-cookie'
 import { Provider } from 'react-redux';
 import store from './store';
 import './index.css'
@@ -16,8 +17,11 @@ root.render(
             <GoogleOAuthProvider
             clientId='342917729024-4ipj6q04gbjnpl6smlt617va02puoqad.apps.googleusercontent.com'
             >
-                <App />
+                <CookiesProvider>
+                    <App />
+                </CookiesProvider>
             </GoogleOAuthProvider>
+
         </BrowserRouter>
     </Provider>
 );

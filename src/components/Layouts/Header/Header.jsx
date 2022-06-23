@@ -4,9 +4,12 @@ import { AppBar, Toolbar,IconButton, Button, Typography,Box, InputBase, MenuItem
 import logo from '../../../images/logo.png'
 import { styled, alpha } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { logOutUser } from '../../../features/user/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { userApi } from '../../../features/user/userApiSlice';
+
+// import productApiSlice from '../../../features/product/productApiSlice'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -65,6 +68,11 @@ const Header = () => {
     setAnchorEl(null);
   };
 
+  const [search, setSearch] = useState('')
+  const handleSubmit = (evt) => {
+    console.log('SUBBMIT');
+  }
+  
   return (
     <div>
       <Box sx={{ flexGrow: 1 }}>
@@ -76,13 +84,26 @@ const Header = () => {
           </Typography>
 
           <Box flexGrow={1}>
-            <Search>
+            <Search onSubmit={handleSubmit}>
               <SearchIconWrapper>
                 <SearchIcon />
               </SearchIconWrapper>
               <StyledInputBase
                 placeholder="Search…"
                 inputProps={{ 'aria-label': 'search' }}
+                value={search}
+                onChange={(evt)=>{
+                  console.log('CHANGED');
+                  setSearch(evt.target.value)
+                }}
+                onKeyPress={async (ev) => {
+                  if (ev.key === "Enter") {
+                    ev.preventDefault();
+                    const searchVal = ev.target.value
+                    // console.log(searchVal);
+                    navigate(`/search?q=${searchVal}`)
+                  }
+                }}
               />
             </Search>
           </Box>
@@ -114,15 +135,21 @@ const Header = () => {
                   <MenuItem onClick={handleClose}>
                     <Typography textAlign="center">Orders</Typography>
                   </MenuItem>
-                  <MenuItem onClick={handleClose}>
+                  <MenuItem onClick={()=>{
+                    handleClose()
+                    navigate('/me')
+                  }}>
                     <Typography textAlign="center">Profile</Typography>
                   </MenuItem>
                   <MenuItem onClick={()=>{
                     handleClose()
-                    dispatch(logOutUser())
-                    navigate('/')
+                     dispatch(userApi.endpoints.logOut.initiate())
+                      console.log('LOGGED OUT SUCCESSFULLY');
+                      dispatch(logOutUser())
+                      navigate('/')
+                    
                     }}>
-                    <Typography textAlign="center">Logout</Typography>
+                    <Typography textAlign="center">log Out</Typography>
                   </MenuItem>
               </Menu>
             </Box>

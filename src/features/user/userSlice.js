@@ -11,13 +11,47 @@ const userSlice = createSlice({
         isAdmin: JSON.parse(localStorage.getItem('userProfile'))?.isAdmin
     },
     reducers:{
-        logInUser: (state, action) => {
+        googleAuthUser: (state, action) => {
             // action.payload contains argument that we pass while calling(in dispatch)
             // console.log(action.payload);
             const {name, given_name, email, picture} = action.payload
             const profile = {
                 isSignedIn:true,
                 name: given_name,
+                full_name: name,
+                email,
+                picture
+            }
+            localStorage.setItem('userProfile', JSON.stringify(profile))
+            return {
+                ...state,
+                ...profile
+            }
+        },
+        signUpUser : (state, action) => {
+            const {avatar:{url:picture}, firstName, lastName, email, role=''} = action.payload
+
+            const profile = {
+                isSignedIn:true,
+                isAdmin: role==='admin'?true: false,
+                name : firstName,
+                full_name: `${firstName} ${lastName}`,
+                email,
+                picture
+            }
+            localStorage.setItem('userProfile', JSON.stringify(profile))
+            return {
+                ...state,
+                ...profile
+            }
+        },
+        logInUser : (state, action) => {
+            const {avatar:{url:picture}, name, email, role} = action.payload
+            const [firstName, lastName] = name.split(' ')
+            const profile = {
+                isSignedIn:true,
+                isAdmin: role==='admin'?true: false,
+                name : firstName,
                 full_name: name,
                 email,
                 picture
@@ -46,7 +80,7 @@ const userSlice = createSlice({
 })
 
 // export user action
-export const {logInUser, logOutUser} = userSlice.actions
+export const {googleAuthUser, logOutUser, signUpUser, logInUser} = userSlice.actions
 
 // export reducer
 export default userSlice.reducer

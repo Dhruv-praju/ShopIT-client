@@ -5,10 +5,10 @@ import { useGetProductByIdQuery } from '../../features/product/productApiSlice'
 
 const Product = () => {
   const {id} = useParams()
-  const {data, isLoading, error} = useGetProductByIdQuery(id)
+  const {isSuccess ,data, isLoading, isError, error} = useGetProductByIdQuery(id)
 
   return (
-    <>{error ? <h1>Product NOT FOUND!!</h1> :
+    <>{isError ? <h1>Product NOT FOUND!!</h1> :
       isLoading ? 
       <Box 
         width='100%' 
@@ -18,7 +18,7 @@ const Product = () => {
         alignItems='center'>
         <CircularProgress size={50} thickness={4} />
       </Box> : 
-      data ? 
+      isSuccess ? 
       <div>
           <h1>Product Details of {id}</h1>
       </div>
