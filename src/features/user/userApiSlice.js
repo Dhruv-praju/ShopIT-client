@@ -2,6 +2,13 @@ import { productApi } from "../product/productApiSlice";
 
 export const userApi = productApi.injectEndpoints({
     endpoints: builder => ({
+        googleAuth : builder.mutation({
+            query: data => ({
+                url: 'google/auth/',
+                method: 'POST',
+                body: data
+            })
+        }),
         logIn : builder.mutation({
             query: data => ({
                 url: 'login/',
@@ -47,4 +54,4 @@ export const userApi = productApi.injectEndpoints({
     overrideExisting: false,
 })
 
-export const {useLogInMutation, useGetUserByIdQuery, useGetUsersQuery, useGetMyProfileQuery, useSignUpMutation, useForgotPasswordMutation, useResetPasswordMutation, useLogOutQuery} = userApi
+export const {useGoogleAuthMutation, useLogInMutation, useGetUserByIdQuery, useGetUsersQuery, useGetMyProfileQuery, useSignUpMutation, useForgotPasswordMutation, useResetPasswordMutation, useLogOutQuery} = userApi

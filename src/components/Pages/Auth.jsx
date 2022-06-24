@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 import Icon from '../google_icon'
-import { useForgotPasswordMutation, useLogInMutation, useResetPasswordMutation, useSignUpMutation } from '../../features/user/userApiSlice'
+import { useForgotPasswordMutation, useGoogleAuthMutation, useLogInMutation, useResetPasswordMutation, useSignUpMutation } from '../../features/user/userApiSlice'
 /** COLORS:
  *   yellow - #e27117
  *   maroonish - #b83e3e
@@ -43,6 +43,7 @@ const Auth = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
+    const [googleAuth, {}] = useGoogleAuthMutation()
     const [logIn, {isLoading}] = useLogInMutation()
     const [signUp,{}] = useSignUpMutation()
     
@@ -50,10 +51,24 @@ const Auth = () => {
         onSuccess: async tokenResponse => {
             // console.log(tokenResponse);
             const {access_token} = tokenResponse
-            const user = await fetchGoogleUser(access_token)
-            // console.log(user);
-            if(user.email_verified) dispatch(googleAuthUser(user))
-            else console.log(user.error);
+
+            let user
+            try {
+                 user = await fetchGoogleUser(access_token)
+                // console.log(user);
+
+                // name, email, picture
+                const {name, email, picture} = user
+                const resp = await googleAuth({name, email, picture})
+                // console.log(resp);
+                
+            } catch (error) {
+                // console.log(error);
+                alert(error.message)
+            }
+
+            if(user?.email_verified) dispatch(googleAuthUser(user))
+            else console.log(user?.error);
 
             navigate('/')
         },
