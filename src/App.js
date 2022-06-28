@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 
 import PageLayout from "./components/PageLayout";
 import Auth from "./components/Pages/Auth";
+import Cart from "./components/Pages/Cart";
 import Home from "./components/Pages/Home";
 import Product from "./components/Pages/Product";
 import Profile from "./components/Pages/Profile";
@@ -19,6 +20,7 @@ const App = ()=>{
                     <Route path="/auth" element={<Auth />}/>
                     <Route path="/search" element={<Search />} />
                     <Route path="/me" element={<Profile />} />
+                    <Route path="/cart" element={<Cart />} />
                 </Route>
             </Routes>
         </div>

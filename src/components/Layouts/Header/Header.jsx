@@ -1,9 +1,10 @@
 import React, {useState} from 'react'
-import { AppBar, Toolbar,IconButton, Button, Typography,Box, InputBase, MenuItem, Menu, Avatar } from '@mui/material'
+import { AppBar, Toolbar,IconButton, Button, Typography,Box, InputBase, MenuItem, Menu, Avatar, Badge } from '@mui/material'
 // import {MenuIcon} from '@mui/icons-material'
 import logo from '../../../images/logo.png'
 import { styled, alpha } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { logOutUser } from '../../../features/user/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -53,6 +54,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const Header = () => {
   const user = useSelector(state => state.user)
+  const cart = useSelector(state => state.cart)
   // console.log(user);
 
   const dispatch = useDispatch()
@@ -109,7 +111,12 @@ const Header = () => {
           </Box>
 
 
-          <Button color="inherit">Cart (3)</Button>
+          <Button sx={{marginRight:2}} color="inherit" onClick={()=>navigate('/cart')} startIcon={
+            <Badge color='secondary' badgeContent={cart.items.length}>
+              <ShoppingCartIcon />
+            </Badge>}>
+            Cart
+          </Button>
           { user.isSignedIn ? (
             <Box sx={{ flexGrow: 0 }} px={1} ml={2}>
                 <IconButton onClick={handleMenu} sx={{ p: 0 }}>

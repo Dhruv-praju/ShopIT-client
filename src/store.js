@@ -4,12 +4,14 @@ import { productApi } from './features/product/productApiSlice'
 import userReducer from './features/user/userSlice'
 import productReducer from './features/product/productSlice'
 import { userApi } from './features/user/userApiSlice'
+import cartReducer from './features/cart/cartSlice'
 
 const rootReducer = {
     reducer:{
         [productApi.reducerPath] : productApi.reducer,
         user: userReducer,
-        products: productReducer
+        products: productReducer,
+        cart: cartReducer
     },
     middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(productApi.middleware).concat(userApi.middleware),
