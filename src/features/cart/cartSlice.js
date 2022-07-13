@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const getTotalPrice = (items) => items.reduce((sum, currItem) => (sum + currItem.qty), 0)
 const cartSlice = createSlice({
     name: 'cart',
     initialState:{
@@ -8,7 +9,7 @@ const cartSlice = createSlice({
     reducers:{
         addItemToCart : (state, action) => {
             // item: {product_id, qty}
-            const {product_id:product, qty, price, stock} = action.payload
+            const {product_id:product, qty, price, stock, name, url} = action.payload
             let newItem = true
             for (let item of state.items) {
                 if(item.product===product){
@@ -17,7 +18,7 @@ const cartSlice = createSlice({
                     else item.qty += qty
                 }
             }
-            if(newItem) state.items.push({product, qty, price})
+            if(newItem) state.items.push({product, qty, name, url, price})
             localStorage.setItem('items', JSON.stringify(state.items))
         },
         removeItemFromCart : (state, action) => {
@@ -50,10 +51,12 @@ const cartSlice = createSlice({
 
             localStorage.setItem('items', JSON.stringify(state.items))
         },
-        
+        removeItems : (state) => {
+            state.items = []
+        }
     }
 })
 
-export const {addItemToCart, removeItemFromCart, incrementQty, decrementQty} = cartSlice.actions
+export const {addItemToCart, removeItemFromCart, incrementQty, decrementQty, removeItems} = cartSlice.actions
 
 export default cartSlice.reducer

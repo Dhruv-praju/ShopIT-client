@@ -2,11 +2,13 @@ import { Button, Grid, Paper, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom';
 import CartItem from '../Cart/CartItem';
 
 const Cart = () => {
     const cart = useSelector(state => state.cart)
     // console.log(cart);
+    const navigate = useNavigate()
     const itemPrice = cart.items.reduce((sum, currItem) => (sum + currItem.price*currItem.qty), 0)
     const totalQty = cart.items.reduce((sum, currItem) => (sum + currItem.qty), 0)
   return (
@@ -37,7 +39,7 @@ const Cart = () => {
                             </Typography>
                         </Box>
                         <Box px={4} pb={3}>
-                            <Button fullWidth color='warning' variant='contained' size='large' sx={{borderRadius:6}}>
+                            <Button fullWidth color='warning' variant='contained' size='large' sx={{borderRadius:6}} onClick={()=> navigate('/checkout/shipping')}>
                                 Check out
                             </Button>
                         </Box>

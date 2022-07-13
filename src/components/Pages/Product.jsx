@@ -139,9 +139,9 @@ const Product = () => {
                     variant="contained"
                     startIcon={<ShoppingCartRounded />}
                     onClick={() => {
-                      const { _id: product_id, price, stock } = product;
-                      //  console.log(product_id, qty);
-                      dispatch(addItemToCart({ product_id, qty, price, stock }));
+                      const { _id: product_id, price, stock, name, image:{url} } = product;
+                      //  console.log(product);
+                      dispatch(addItemToCart({ product_id, qty, price, stock, name, url }));
                     }}
                   >
                     Add to Cart

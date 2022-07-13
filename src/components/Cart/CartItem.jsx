@@ -10,7 +10,7 @@ import { decrementQty, incrementQty, removeItemFromCart } from "../../features/c
 import { useDispatch } from "react-redux";
 
 const Img = styled("img")({
-  margin: "auto",
+  margin: "auto", 
   display: "block",
   maxWidth: "100%",
   maxHeight: "80%",
